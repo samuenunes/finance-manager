@@ -1,0 +1,19 @@
+# Java
+*.class
+*.jar
+*.war
+*.log
+target/
+
+# Node.js
+node_modules/
+dist/
+
+# Docker
+*.env
+*.swp
+
+# IDEs
+.idea/
+*.iml
+*.vscode/
