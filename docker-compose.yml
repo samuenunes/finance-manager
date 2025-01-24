@@ -1,0 +1,30 @@
+#version: "3.9"
+services:
+  postgres:
+    image: postgres:17.2
+    restart: unless-stopped
+    container_name: postgres
+    environment:
+      POSTGRES_USER: asdf
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: finance
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Interface de administração RabbitMQ
+
+volumes:
+  postgres_data: # Volume persistente para o banco de dados
