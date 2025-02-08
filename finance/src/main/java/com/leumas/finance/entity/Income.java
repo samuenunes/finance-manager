@@ -1,6 +1,5 @@
 package com.leumas.finance.entity;
 
-//import jakarta.persistence.;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,10 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Entity
+@Table(name = "income")
 public class Income {
 
     @Id

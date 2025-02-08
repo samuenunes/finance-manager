@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: DEV
   application:
     name: 'finance'
   datasource:
