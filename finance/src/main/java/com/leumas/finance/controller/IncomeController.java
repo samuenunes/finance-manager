@@ -18,6 +18,7 @@ public class IncomeController {
 
     @GetMapping
     public ResponseEntity<List<Income>> findAll(){
+        System.out.println("RESPONSE: "+incomeService.findAll());
         return ResponseEntity.ok(incomeService.findAll());
     }
 
