@@ -1,7 +1,10 @@
 package com.leumas.finance.controller;
 
+import com.leumas.finance.controller.request.ExpenseRequest;
+import com.leumas.finance.controller.response.ExpenseResponse;
 import com.leumas.finance.entity.Expense;
 import com.leumas.finance.service.ExpenseService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +20,18 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Expense>> getAllExpenses() {
+    public ResponseEntity<List<ExpenseResponse>> getAllExpenses() {
         return ResponseEntity.ok(expenseService.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<Expense> save(@RequestBody Expense expense) {
+    public ResponseEntity<ExpenseResponse> save(@RequestBody ExpenseRequest expense) {
         return ResponseEntity.ok(expenseService.save(expense));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Expense> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         expenseService.deleteById(id);
-        return ResponseEntity.noContent().build();
+        //return ResponseEntity.noContent().build();
     }
 }

@@ -4,10 +4,15 @@ import com.leumas.finance.entity.enums.ExpenseType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Expense {
 
     @Id
@@ -17,13 +22,13 @@ public class Expense {
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
-    private Double amount;
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExpenseType type;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 }

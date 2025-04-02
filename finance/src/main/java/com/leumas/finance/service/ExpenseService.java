@@ -1,10 +1,14 @@
 package com.leumas.finance.service;
 
+import com.leumas.finance.controller.request.ExpenseRequest;
+import com.leumas.finance.controller.response.ExpenseResponse;
 import com.leumas.finance.entity.Expense;
+import com.leumas.finance.mapper.ExpenseMapper;
 import com.leumas.finance.repository.ExpenseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpenseService {
@@ -15,16 +19,20 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    public List<Expense> findAll() {
-        return expenseRepository.findAll();
+    public List<ExpenseResponse> findAll() {
+        return expenseRepository.findAll()
+                .stream()
+                .map(ExpenseMapper::toExpenseResponse)
+                .toList();
     }
 
-    public Expense save(Expense expense) {
-        return expenseRepository.save(expense);
+    public ExpenseResponse save(ExpenseRequest expense) {
+        Expense newExpense = expenseRepository.save(ExpenseMapper.toExpense(expense));
+        return ExpenseMapper.toExpenseResponse(newExpense);
     }
 
-    public Expense findById(Long id) {
-        return expenseRepository.findById(id).orElse(null);
+    public Optional<ExpenseResponse> findById(Long id) {
+        return expenseRepository.findById(id).map(ExpenseMapper::toExpenseResponse);
     }
 
     public void deleteById(Long id) {
