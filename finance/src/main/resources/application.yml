@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: DEV
   application:
     name: 'finance'
   datasource:
@@ -12,11 +10,5 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
-  rabbitmq:
-    host: rabbitmq
-    port: 5672
-  redis:
-    host: redis
-    port: 6379
 server:
   port: 8080
