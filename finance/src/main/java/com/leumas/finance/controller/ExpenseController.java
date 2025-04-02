@@ -12,12 +12,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/expense")
+@RequiredArgsConstructor
 public class ExpenseController {
     private final ExpenseService expenseService;
-
-    public ExpenseController(ExpenseService expenseService) {
-        this.expenseService = expenseService;
-    }
 
     @GetMapping
     public ResponseEntity<List<ExpenseResponse>> getAllExpenses() {
