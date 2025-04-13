@@ -8,19 +8,17 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public record ExpenseRequest(
-        @NotEmpty(message = "Descrição obrigatória")
-        @NotBlank
+        @NotBlank(message = "A descrição da despesa é obrigatória")
         String description,
 
         @NotNull(message = "O valor da despesa é obrigatório")
         @DecimalMin(value = "0.1", message = "O valor da despesa deve ser maior que 0.")
         BigDecimal amount,
 
-       // @NotNull(message = "Tipo de despesa é obrigatório")
-        //@NotBlank(message = "Tipo de despesa é obrigatório")
+        @NotNull(message = "O tipo de despesa é obrigatório")
         ExpenseType type,
 
-        //@NotEmpty(message = "Data é obrigatória")
+        @NotNull(message = "A data da despesa é obrigatória")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         LocalDate date) {
 }
