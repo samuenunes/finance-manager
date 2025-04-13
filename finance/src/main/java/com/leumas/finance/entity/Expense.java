@@ -3,9 +3,12 @@ package com.leumas.finance.entity;
 import com.leumas.finance.entity.enums.ExpenseType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -31,4 +34,10 @@ public class Expense {
 
     @Column(nullable = false)
     private LocalDate date;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

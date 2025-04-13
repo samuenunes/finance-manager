@@ -31,8 +31,8 @@ public class ExpenseService {
         return ExpenseMapper.toExpenseResponse(newExpense);
     }
 
-    public Optional<ExpenseResponse> findById(Long id) {
-        return expenseRepository.findById(id).map(ExpenseMapper::toExpenseResponse);
+    public Optional<Expense> findById(Long id) {
+        return expenseRepository.findById(id);
     }
 
     public void deleteById(Long id) {
