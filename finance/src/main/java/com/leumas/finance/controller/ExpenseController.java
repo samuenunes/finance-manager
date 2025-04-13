@@ -3,8 +3,11 @@ package com.leumas.finance.controller;
 import com.leumas.finance.controller.request.ExpenseRequest;
 import com.leumas.finance.controller.response.ExpenseResponse;
 import com.leumas.finance.entity.Expense;
+import com.leumas.finance.mapper.ExpenseMapper;
 import com.leumas.finance.service.ExpenseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +24,21 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ExpenseResponse> getExpenseById(@PathVariable Long id) {
+        return expenseService.findById(id)
+                .map(expense -> ResponseEntity.ok(ExpenseMapper.toExpenseResponse(expense)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
-    public ResponseEntity<ExpenseResponse> save(@RequestBody ExpenseRequest expense) {
-        return ResponseEntity.ok(expenseService.save(expense));
+    public ResponseEntity<ExpenseResponse> save(@Valid @RequestBody ExpenseRequest expense) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(expenseService.save(expense));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         expenseService.deleteById(id);
-        //return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 }
