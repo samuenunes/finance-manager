@@ -3,21 +3,23 @@ package com.leumas.finance.service;
 import com.leumas.finance.controller.request.ExpenseRequest;
 import com.leumas.finance.controller.response.ExpenseResponse;
 import com.leumas.finance.entity.Expense;
+import com.leumas.finance.entity.ExpenseCategory;
 import com.leumas.finance.mapper.ExpenseMapper;
+import com.leumas.finance.repository.ExpenseCategoryRepository;
 import com.leumas.finance.repository.ExpenseRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
-
-    public ExpenseService(ExpenseRepository expenseRepository) {
-        this.expenseRepository = expenseRepository;
-    }
+    private final ExpenseCategoryRepository expenseCategoryRepository;
 
     public List<ExpenseResponse> findAll() {
         return expenseRepository.findAll()
@@ -27,8 +29,13 @@ public class ExpenseService {
     }
 
     public ExpenseResponse save(ExpenseRequest expense) {
-        Expense newExpense = expenseRepository.save(ExpenseMapper.toExpense(expense));
+        Expense newExpense = expenseRepository.save(ExpenseMapper.toExpense(expense, findCategory(expense.category())));
         return ExpenseMapper.toExpenseResponse(newExpense);
+    }
+
+    private ExpenseCategory findCategory(Long id) {
+        return expenseCategoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
     }
 
     public Optional<Expense> findById(Long id) {

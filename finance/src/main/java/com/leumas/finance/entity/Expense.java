@@ -1,6 +1,5 @@
 package com.leumas.finance.entity;
 
-import com.leumas.finance.entity.enums.ExpenseType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,9 +27,9 @@ public class Expense {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ExpenseType type;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private ExpenseCategory category;
 
     @Column(nullable = false)
     private LocalDate date;

@@ -1,7 +1,7 @@
 package com.leumas.finance.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.leumas.finance.entity.enums.ExpenseType;
+import com.leumas.finance.entity.ExpenseCategory;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public record ExpenseResponse (Long id,
                                String description,
                                BigDecimal amount,
-                               ExpenseType type,
+                               ExpenseCategoryResponse category,
                                @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
                                LocalDate date) {
 
