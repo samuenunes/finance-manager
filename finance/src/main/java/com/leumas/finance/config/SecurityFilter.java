@@ -22,17 +22,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization");
-        System.out.println("TOKEN: " + token);
         if(Strings.isNotEmpty(token) && token.startsWith("Bearer ")) {
             token = token.substring(7);
             Optional<JWTUserData> jwtUserData = tokenService.verifyToken(token);
             if(jwtUserData.isPresent()){
                 JWTUserData userData = jwtUserData.get();
-                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userData, null));
+                SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userData, null, null));
             }
-            filterChain.doFilter(request, response);
-        }else{
-            filterChain.doFilter(request, response);
         }
+        filterChain.doFilter(request, response);
     }
 }
