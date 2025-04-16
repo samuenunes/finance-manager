@@ -1,5 +1,6 @@
 package com.leumas.finance.config;
 
+import com.leumas.finance.exception.UsernameOrPasswordInvalidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,12 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
+
+    @ExceptionHandler(UsernameOrPasswordInvalidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleUsernameOrPasswordException(UsernameOrPasswordInvalidException exception) {
+        return exception.getMessage();
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
