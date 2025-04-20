@@ -24,6 +24,7 @@ public class TokenService {
                 .withSubject(user.getEmail())
                 .withClaim("id", user.getId())
                 .withClaim("name", user.getName())
+                .withClaim("role", user.getRole().name())
                 .withExpiresAt(Instant.now().plusSeconds(3600 * 24))
                 .withIssuedAt(Instant.now())
                 .withIssuer("Finance Manager API")
@@ -38,6 +39,7 @@ public class TokenService {
             return Optional.of(JWTUserData.builder()
                     .id(jwt.getClaim("id").asLong())
                     .email(jwt.getSubject())
+                    .role(jwt.getClaim("role").asString())
                     .build());
         }catch (JWTVerificationException e){
             return Optional.empty();
