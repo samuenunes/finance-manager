@@ -15,11 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
     private final ExpenseCategoryRepository expenseCategoryRepository;
+
+    public ExpenseService(ExpenseRepository expenseRepository, ExpenseCategoryRepository expenseCategoryRepository) {
+        this.expenseRepository = expenseRepository;
+        this.expenseCategoryRepository = expenseCategoryRepository;
+    }
 
     public List<ExpenseResponse> findAll() {
         return expenseRepository.findAll()

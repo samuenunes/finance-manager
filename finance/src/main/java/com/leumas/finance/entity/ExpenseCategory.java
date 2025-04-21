@@ -2,6 +2,12 @@ package com.leumas.finance.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "expense_categories")
@@ -9,7 +15,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExpenseCategory {
+public class ExpenseCategory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +25,6 @@ public class ExpenseCategory {
     private String name;
 
     private boolean fixed;
-    private boolean essential;
 
+    private boolean essential;
 }
