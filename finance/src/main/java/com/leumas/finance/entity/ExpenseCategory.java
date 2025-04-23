@@ -10,7 +10,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "expense_categories")
+@Table(name = "expense_category")
 @Data
 @Builder
 @NoArgsConstructor
