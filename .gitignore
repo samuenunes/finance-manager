@@ -1,13 +1,15 @@
-# Java
+# Javahttps://github.com/samuenunes/finance-manager/
 *.class
 *.jar
 *.war
 *.log
 target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# Node.js
-node_modules/
-dist/
+application-*.yml
+!application.yml
 
 # Docker
 *.env

@@ -13,18 +13,5 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
-
-  rabbitmq:
-    image: rabbitmq:management
-    container_name: rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672" # Interface de administração RabbitMQ
-
 volumes:
   postgres_data: # Volume persistente para o banco de dados
