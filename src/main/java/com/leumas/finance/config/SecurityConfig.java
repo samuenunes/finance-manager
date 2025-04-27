@@ -30,6 +30,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/v1/api-docs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/swagger/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/v1/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/v1/auth/login").permitAll()
                         .anyRequest().authenticated()

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 public record IncomeResponse(Long id,
                              String description,
                              BigDecimal amount,
+                             IncomeCategoryResponse category,
                              @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
                              LocalDate date) {
 }

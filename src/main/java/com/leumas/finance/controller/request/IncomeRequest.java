@@ -16,6 +16,9 @@ public record IncomeRequest(
         @DecimalMin(value = "0.1", message = "O valor da receita deve ser maior que 0.")
         BigDecimal amount,
 
+        @NotNull(message = "A categoria da receita é obrigatória")
+        Long category,
+
         @NotNull(message = "A data da receita é obrigatória")
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
         LocalDate date) {
