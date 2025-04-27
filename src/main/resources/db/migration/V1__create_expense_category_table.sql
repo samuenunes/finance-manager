@@ -7,5 +7,5 @@ essential BOOLEAN,
 created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 updated_at TIMESTAMP,
 created_by BIGINT,
-updated_by BIGINT,
+updated_by BIGINT
 );
