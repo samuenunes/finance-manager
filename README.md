@@ -8,9 +8,13 @@ Sistema de gerenciamento financeiro pessoal, desenvolvido em Java com Spring Boo
 - **Java 17**
 - **Spring Boot**
 - **Spring Data JPA**
+- **Spring Security**
 - **Hibernate**
 - **PostgreSQL**
-- **Flyway** (desenvolvimento)
+- **DB Migration - Flyway**
+
+### Documentação
+- **Springdoc - Swagger**
 
 ### Testes
 - **JUnit 5** (desenvolvimento)
