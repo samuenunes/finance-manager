@@ -1,5 +1,6 @@
 package com.leumas.finance.config;
 
+import com.leumas.finance.config.db.TenantContext;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             Optional<JWTUserData> jwtUserData = tokenService.verifyToken(token);
             if(jwtUserData.isPresent()){
                 JWTUserData userData = jwtUserData.get();
+                TenantContext.setCurrentTenant(String.valueOf(userData.id()));
                 SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(
                         userData,
