@@ -1,18 +1,15 @@
-package com.leumas.finance.entity;
+package com.leumas.finance.entity.auth;
 
+import com.leumas.finance.entity.BaseEntity;
 import com.leumas.finance.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -32,6 +29,9 @@ public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
+    private String cpf;
 
     @Column(nullable = false)
     private String password;
