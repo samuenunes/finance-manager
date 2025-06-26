@@ -1,5 +1,6 @@
 package com.leumas.finance.service;
 
+import com.leumas.finance.config.db.TenantContext;
 import com.leumas.finance.controller.request.IncomeCategoryRequest;
 import com.leumas.finance.controller.response.IncomeCategoryResponse;
 import com.leumas.finance.entity.IncomeCategory;
@@ -17,6 +18,7 @@ public class  IncomeCategoryService {
     private final IncomeCategoryRepository repository;
 
     public IncomeCategoryResponse create(IncomeCategoryRequest incomeCategoryRequest) {
+        System.out.println("TESTE TENANT ==="+ TenantContext.getCurrentTenant());
         return IncomeCategoryMapper.toIncomeCategoryResponse(
                 repository.save(IncomeCategoryMapper.toIncomeCategory(incomeCategoryRequest))
         );

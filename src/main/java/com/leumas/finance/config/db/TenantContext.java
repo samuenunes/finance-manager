@@ -4,7 +4,7 @@ public class TenantContext {
     private static final ThreadLocal<String> currentTenant = new ThreadLocal<>();
 
     public static void setCurrentTenant(String tenant) {
-        currentTenant.set(tenant);
+        currentTenant.set("tenant_"+tenant);
     }
 
     public static String getCurrentTenant() {
@@ -15,4 +15,3 @@ public class TenantContext {
         currentTenant.remove();
     }
 }
-

@@ -1,9 +1,6 @@
 package com.leumas.finance.config.db;
 
 import jakarta.persistence.EntityManagerFactory;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.source.spi.MultiTenancySource;
-import org.hibernate.cfg.MultiTenancySettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -19,17 +17,20 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.leumas.finance.repository")
-@RequiredArgsConstructor
 public class HibernateConfig {
-    private final MultiTenantConnectionProviderImpl multiTenantConnectionProvider;
-    private final TenantIdentifierResolver tenantIdentifierResolver;
+
+    @Autowired
+    private MultiTenantConnectionProviderImpl multiTenantConnectionProvider;
+
+    @Autowired
+    private TenantIdentifierResolver tenantIdentifierResolver;
+
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder, DataSource dataSource) {
-        System.out.println("DATASOURCE = " + dataSource);
         Map<String, Object> properties = new HashMap<>();
-        //properties.put(org.hibernate.cfg.Environment.Mul MultiTenancyStrategy.SCHEMA);
         properties.put(org.hibernate.cfg.Environment.MULTI_TENANT_CONNECTION_PROVIDER, multiTenantConnectionProvider);
         properties.put(org.hibernate.cfg.Environment.MULTI_TENANT_IDENTIFIER_RESOLVER, tenantIdentifierResolver);
+
         return builder
                 .dataSource(dataSource)
                 .packages("com.leumas.finance.entity")
@@ -43,3 +44,4 @@ public class HibernateConfig {
         return new JpaTransactionManager(emf);
     }
 }
+

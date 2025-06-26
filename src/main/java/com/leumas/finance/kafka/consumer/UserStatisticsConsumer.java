@@ -1,5 +1,6 @@
 package com.leumas.finance.kafka.consumer;
 
+import com.leumas.finance.config.db.TenantContext;
 import com.leumas.finance.entity.UserStatistics;
 import com.leumas.finance.kafka.event.TransactionalEvent;
 import com.leumas.finance.repository.UserStatisticsRepository;
@@ -23,6 +24,7 @@ public class UserStatisticsConsumer {
     @KafkaListener(topics = "transactional-events", groupId = "finance-manager")
     public void consume(TransactionalEvent event) {
         log.info("Received transaction event: {}", event);
+        TenantContext.setCurrentTenant(event.userId().toString());
         UserStatistics stats = repository.findByUserIdAndYearAndMonth(event.userId(), event.year(), event.month())
                 .orElseGet(() -> {
                     return UserStatistics
