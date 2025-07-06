@@ -19,6 +19,23 @@ public class IncomeMapper {
                 .build();
     }
 
+    public static Income clone(Income income) {
+        return Income.builder()
+                .id(income.getId())
+                .description(income.getDescription())
+                .amount(income.getAmount())
+                .category(income.getCategory())
+                .date(income.getDate())
+                .build();
+    }
+
+    public void mapIncome(Income incomeTarget, IncomeRequest incomeSource, IncomeCategory category) {
+        incomeTarget.setDescription(incomeSource.description());
+        incomeTarget.setAmount(incomeSource.amount());
+        incomeTarget.setCategory(category);
+        incomeTarget.setDate(incomeSource.date());
+    }
+
     public static IncomeResponse toResponse(Income income) {
         return IncomeResponse
                 .builder()
