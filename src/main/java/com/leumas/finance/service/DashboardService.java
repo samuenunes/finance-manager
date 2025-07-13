@@ -3,6 +3,7 @@ package com.leumas.finance.service;
 import com.leumas.finance.controller.response.BalanceHistoryResponse;
 import com.leumas.finance.controller.response.DailyStatsResponse;
 import com.leumas.finance.controller.response.DashboardResponse;
+import com.leumas.finance.controller.response.MonthlyStatsResponse;
 import com.leumas.finance.entity.UserStatistics;
 import com.leumas.finance.repository.UserStatisticsRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +11,25 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
     private final UserStatisticsRepository repository;
+
+    public List<MonthlyStatsResponse> getMonthlyStats(int year) {
+        List<UserStatistics> statsList = repository.findByYear(year);
+        return statsList.stream()
+                .sorted(Comparator.comparing(UserStatistics::getMonth))
+                .map(stat -> new MonthlyStatsResponse(
+                        stat.getYear(),
+                        stat.getMonth(),
+                        stat.getTotalIncomes(),
+                        stat.getTotalExpenses()
+                )).toList();
+    }
 
     public DashboardResponse getCurrentMonthStats() {
         LocalDate now = LocalDate.now();
@@ -26,6 +40,9 @@ public class DashboardService {
                 .totalIncome(stats.getTotalIncomes())
                 .totalExpense(stats.getTotalExpenses())
                 .balance(stats.getBalance())
+                .monthlyIncome(stats.getTotalIncomes())
+                .monthlyExpenses(stats.getTotalExpenses())
+                .monthlyBalance(stats.getBalance())
                 .incomesByCategory(stats.getIncomesByCategory())
                 .expensesByCategory(stats.getExpensesByCategory())
                 .totalTransactions(stats.getTotalTransactions())

@@ -52,7 +52,7 @@ public class MultiTenantConnectionProviderImpl implements MultiTenantConnectionP
     }
 
     private void ensureSchemaAndMigrate(String schema) {
-        log.info("SCHEMA: {}", schema);
+        log.debug("SCHEMA: {}", schema);
         if (migratedSchemas.contains(schema)) return;
 
         synchronized (this) {
