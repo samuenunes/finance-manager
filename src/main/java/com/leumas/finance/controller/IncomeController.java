@@ -37,6 +37,13 @@ public class IncomeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(incomeService.save(income));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<IncomeResponse> update(@PathVariable Long id, @Valid @RequestBody IncomeRequest income) {
+        return incomeService.update(id, income)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Income> delete(@PathVariable Long id){
         incomeService.deleteById(id);

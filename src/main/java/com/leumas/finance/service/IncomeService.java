@@ -4,12 +4,14 @@ import com.leumas.finance.controller.request.IncomeRequest;
 import com.leumas.finance.controller.response.IncomeResponse;
 import com.leumas.finance.entity.Income;
 import com.leumas.finance.entity.IncomeCategory;
-import com.leumas.finance.kafka.producer.UserStatisticsProducer;
 import com.leumas.finance.kafka.event.TransactionalEvent;
+import com.leumas.finance.kafka.producer.UserStatisticsProducer;
 import com.leumas.finance.mapper.IncomeMapper;
+import com.leumas.finance.mapper.KafkaEventMapper;
 import com.leumas.finance.repository.IncomeCategoryRepository;
 import com.leumas.finance.repository.IncomeRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,8 +38,18 @@ public class IncomeService {
 
     public IncomeResponse save(IncomeRequest income) {
         Income newIncome =  incomeRepository.save(IncomeMapper.toIncome(income, findCategory(income.category())));
-        sendIncomeEvent(newIncome);
+        sendCreateIncomeEvent(newIncome);
         return IncomeMapper.toResponse(newIncome);
+    }
+
+    public Optional<IncomeResponse> update(Long id, IncomeRequest incomeNew) {
+        return incomeRepository.findById(id).map(income -> {
+            Income incomeOld = IncomeMapper.clone(income);
+            IncomeMapper.mapIncome(income, incomeNew, findCategory(incomeNew.category()));
+            Income updatedIncome = incomeRepository.save(income);
+            sendUpdateIncomeEvent(incomeOld, updatedIncome);
+            return IncomeMapper.toResponse(updatedIncome);
+        });
     }
 
     private IncomeCategory findCategory(Long id) {
@@ -51,19 +63,21 @@ public class IncomeService {
     }
 
     public void deleteById(Long id) {
-        incomeRepository.deleteById(id);
+        Income income = incomeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Registro não encontrado."));
+        incomeRepository.delete(income);
+        sendDeleteIncomeEvent(income);
     }
 
-    private void sendIncomeEvent(Income income){
-        userStatisticsProducer.sendEvent(
-                new TransactionalEvent(
-                        income.getCreatedBy(),
-                        "INCOME",
-                        income.getAmount(),
-                        income.getCategory().getName(),
-                        income.getDate().getYear(),
-                        income.getDate().getMonthValue()
-                )
-        );
+    private void sendCreateIncomeEvent(Income income){
+        userStatisticsProducer.sendCreateEvent(KafkaEventMapper.toTransactionalEvent(income));
+    }
+
+    private void sendUpdateIncomeEvent(Income incomeOld, Income incomeNew){
+        userStatisticsProducer.sendUpdateEvent(KafkaEventMapper.toTransactionalUpdateEvent(incomeOld, incomeNew));
+    }
+
+    private void sendDeleteIncomeEvent(Income income){
+        userStatisticsProducer.sendDeleteEvent(KafkaEventMapper.toTransactionalEvent(income));
     }
 }

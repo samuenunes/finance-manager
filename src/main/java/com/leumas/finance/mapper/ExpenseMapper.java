@@ -19,6 +19,23 @@ public class ExpenseMapper {
                 .build();
     }
 
+    public static Expense clone(Expense expense) {
+        return Expense.builder()
+                .id(expense.getId())
+                .description(expense.getDescription())
+                .amount(expense.getAmount())
+                .category(expense.getCategory())
+                .date(expense.getDate())
+                .build();
+    }
+
+    public void mapExpense(Expense expenseTarget, ExpenseRequest expenseSource, ExpenseCategory category) {
+        expenseTarget.setDescription(expenseSource.description());
+        expenseTarget.setAmount(expenseSource.amount());
+        expenseTarget.setCategory(category);
+        expenseTarget.setDate(expenseSource.date());
+    }
+    
     public static ExpenseResponse toExpenseResponse(Expense expense) {
         return ExpenseResponse
                 .builder()
